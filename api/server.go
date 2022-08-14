@@ -17,7 +17,11 @@ func NewServer(store storage.URLStore) *Server {
 		store:  store,
 		router: gin.Default(),
 	}
-	// TODO: initilize routing
+
+	// initilize routing
+	server.router.POST("/shorturls", server.createShortURL)
+	server.router.GET("/:short_url", server.redirectShortURL)
+
 	return server
 }
 
