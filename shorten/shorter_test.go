@@ -63,22 +63,22 @@ func TestShortenByInt(t *testing.T) {
 		{
 			"base62 encode 102938190248",
 			102938190248,
-			"4QjMwkTM4MTOyATMwADMwADMwAD",
+			"4QjMwkTM",
 		},
 		{
 			"base62 encode 1",
 			1,
-			"xADMwADMwADMwADMwADMwADMwAD",
+			"xADMwADM",
 		},
 		{
 			"base62 encode 0",
 			0,
-			"wADMwADMwADMwADMwADMwADMwAD",
+			"wADMwADM",
 		},
 		{
 			"base62 encode MaxUint64",
 			math.MaxUint64,
-			"1EjNxUTN5AzNzcDM0QzN2QDN4ED",
+			"1EjNxUTN",
 		},
 	}
 

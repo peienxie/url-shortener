@@ -7,12 +7,13 @@ import (
 )
 
 const intMaxWidth = 20
+const shortenLength = 8
 
 // ShortenByHash encodes given long URL string into a shorten URL string by
 // apply SHA256 hashing and base62 encoding with given long URL
 func ShortenByHash(longURL string) string {
 	digest := sha256.Sum256([]byte(longURL))
-	return base62.EncodeToString(digest[:])
+	return base62.EncodeToString(digest[:])[:shortenLength]
 }
 
 func itoaLeadingZeros(num uint64, width int) []byte {
@@ -37,5 +38,5 @@ func itoaLeadingZeros(num uint64, width int) []byte {
 // the given integer will be converted to a numeric string padded with leading zeros first
 func ShortenByInt(num uint64) string {
 	b := itoaLeadingZeros(num, intMaxWidth)
-	return base62.EncodeToString(b)
+	return base62.EncodeToString(b)[:shortenLength]
 }
