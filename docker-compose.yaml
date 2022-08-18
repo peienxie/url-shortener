@@ -11,6 +11,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - REDIS_ADDR=redis:6390
+      - API_SERVER_ADDR=:8080
     ports:
       - "8080:8080"
     depends_on:
