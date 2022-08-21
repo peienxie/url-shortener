@@ -32,8 +32,29 @@ func deleteEnvFile(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func unsetEnvVars(t *testing.T) map[string]string {
+	envVarsMap := make(map[string]string)
+	envVarsKeys := []string{"REDIS_ADDR", "API_SERVER_ADDR"}
+	for _, key := range envVarsKeys {
+		if val, ok := os.LookupEnv(key); ok {
+			envVarsMap[key] = val
+			err := os.Unsetenv(key)
+			require.NoError(t, err)
+		}
+	}
+	return envVarsMap
+}
+
+func restoreEnvVars(t *testing.T, envVarsMap map[string]string) {
+	for key, val := range envVarsMap {
+		err := os.Setenv(key, val)
+		require.NoError(t, err)
+	}
+}
+
 func TestLoadConfigFromDotEnvFile(t *testing.T) {
 	createEnvFile(t)
+	origEnvVarsPairs := unsetEnvVars(t)
 
 	config, err := config.LoadConfig(".")
 	require.NoError(t, err)
@@ -42,6 +63,7 @@ func TestLoadConfigFromDotEnvFile(t *testing.T) {
 	require.Equal(t, defaultEnv["REDIS_ADDR"], config.RedisAddr)
 	require.Equal(t, defaultEnv["API_SERVER_ADDR"], config.ApiServerAddr)
 
+	restoreEnvVars(t, origEnvVarsPairs)
 	deleteEnvFile(t)
 }
 
