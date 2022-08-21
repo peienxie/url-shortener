@@ -1,6 +1,8 @@
 package api
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/peienxie/url-shortener/storage"
 )
@@ -18,8 +20,11 @@ func NewServer(store storage.URLStore) *Server {
 		router: gin.Default(),
 	}
 
+	// each IP can only create 30 shorten urls per hour
+	limiter := NewRateLimiter(time.Hour, 30)
+
 	// initilize routing
-	server.router.POST("/shorturls", server.createShortURL)
+	server.router.POST("/shorturls", limiter, server.createShortURL)
 	server.router.GET("/:short_url", server.redirectShortURL)
 
 	return server
