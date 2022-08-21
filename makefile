@@ -14,3 +14,7 @@ lint:
 test:
 	go test ./... -v -cover
 
+# run github actions locally
+.PHONY: actions
+actions:
+	act -r --rm 
