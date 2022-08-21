@@ -7,17 +7,21 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
+	"github.com/peienxie/url-shortener/config"
 	"github.com/peienxie/url-shortener/shorten"
 	"github.com/stretchr/testify/require"
 )
 
-const RedisAddr = ":6379"
-
 var store URLStore
 
 func init() {
-	client := redis.NewClient(&redis.Options{Addr: RedisAddr})
-	_, err := client.Ping().Result()
+	cfg, err := config.LoadConfig(".")
+	if err != nil {
+		log.Fatalf("load config app.env err: %v\n", err)
+	}
+
+	client := redis.NewClient(&redis.Options{Addr: cfg.RedisAddr})
+	_, err = client.Ping().Result()
 	if err != nil {
 		log.Fatalf("connect redis err: %v\n", err)
 	}
